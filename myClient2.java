@@ -47,7 +47,7 @@
           dout.flush();
           str = in .readLine();
 
-          //While last message from ds-server is not none
+          //While last message from ds-server is not none.
           while (!str.equals("NONE")) {
             System.out.println(str);
 
@@ -64,6 +64,8 @@
               servers.clear();
               flag = false;
               flag1 = false;
+              
+              // find the first available server 
 
               if (flag1 = false) {
                 dout.write(("GETS Avail: " + jobInfo[4] + " " + jobInfo[5] + " " + jobInfo[6] + "\n").getBytes());
@@ -84,6 +86,8 @@
                   flag1 = true;
                 }
               }
+              
+              // if not available use Gets capable 
 
               if (flag1 = true) {
                 dout.write(("GETS Capable: " + jobInfo[4] + " " + jobInfo[5] + " " + jobInfo[6] + "\n").getBytes());
@@ -104,12 +108,8 @@
               if (flag != true) {
                 for (int i = 0; i < serverCount; i++) {
                   str = in .readLine();
-
                   servers.add(str); //adding all the servers in the list 
-
                   String serverInfo[] = str.split(" ");
-
-              
                 }
               }
               dout.write(("OK\n").getBytes());
@@ -117,10 +117,10 @@
               str = in .readLine();
               System.out.println("RCVD: " + str);
 
-              min = 1000000;
+              min = 1000000; // a very large number 
 
-              System.out.println("server size: " + servers.size());
-
+       
+		//finding servers with wait time or runtime=0 or not 
               for (int i = 0; i < servers.size(); i++) {
                 String serverCheck[] = servers.get(i).split(" ");
                 if (Integer.parseInt(serverCheck[7]) == 0 || Integer.parseInt(serverCheck[8]) == 0) {
@@ -133,15 +133,13 @@
                 }
               }
 
-              //finding number of largest servers
+              //finding the server which has the least waiting time 
               if (flag != true) {
                 for (int i = 0; i < servers.size(); i++) {
                   String string[] = servers.get(i).split(" ");
                   dout.write(("EJWT " + string[0] + " " + string[1] + "\n").getBytes());
                   dout.flush();
                   str = in .readLine();
-                  // System.out.println("aa: " + str );
-
                   String wtime = str;
 
                   if (min > (Integer.parseInt(str))) {
